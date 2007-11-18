@@ -1,23 +1,17 @@
-%define	name  	dbh
-%define version	4.5.0
-%define	release	%mkrel 2
-
-%define api_version	4.5
-%define lib_major	4
-%define lib_name	%mklibname %{name}- %{api_version} %{lib_major}
-
-%define __libtoolize /bin/true
+%define apiver 4.5
+%define major 4
+%define libname %mklibname %{name}- %{apiver} %{major}
+%define develname %mklibname %{name} -d
 
 Summary:	Disk based hash library
-Name:		%{name}
-Version: 	%{version}
-Release: 	%{release}
-License:	LGPL
-Group: 		System/Libraries
-Source:		%{name}-%{version}.tar.bz2
+Name:		dbh
+Version:	4.5.0
+Release:	%mkrel 3
+License:	LGPLv2+
+Group:		System/Libraries
 URL:		http://dbh.sourceforge.net/
-Buildroot: 	%{_tmppath}/%{name}-root
-
+Source:		http://downloads.sourceforge.net/dbh/%{name}-%{version}.tar.bz2
+Buildroot:	%{_tmppath}/%{name}-%{version}-buildroot
 
 %description 
 Disk based hashes is a method to create multidimensional binary trees on disk.
@@ -28,11 +22,11 @@ particular record is minimized (using the concept of critical points from
 calculus), which provides the means to construct optimized databases for 
 particular applications.  
 
-%package -n %{lib_name}
+%package -n %{libname}
 Summary:	Disk based hash library
 Group:		System/Libraries
 
-%description -n %{lib_name}
+%description -n %{libname}
 Disk based hashes is a method to create multidimensional binary trees on disk.
 This library permits the extension of database concept to a plethora of
 electronic data, such as graphic information. With the multidimensional binary
@@ -41,47 +35,45 @@ particular record is minimized (using the concept of critical points from
 calculus), which provides the means to construct optimized databases for
 particular applications.
 
-%package -n %{lib_name}-devel
+%package -n %{develname}
 Summary:	Libraries and headerfiles for development with dbh
 Group:		Development/Other
 Provides:	dbh-devel = %{version}-%{release}
+Provides:	libdbh-devel = %{version}-%{release}
 Provides:	dbh4-devel = %{version}-%{release}
-Requires:	%{lib_name} = %{version}-%{release}
+Requires:	%{libname} = %{version}-%{release}
 
-%description -n %{lib_name}-devel
+%description -n %{develname}
 Libraries and headerfiles for development with dbh.
 
-
 %prep
-%setup -q -n %{name}-%{version}
+%setup -q
 
 %build
-%configure
+%configure2_5x \
+	--disable-rpath
 %make
 
 %install
-rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT 
+rm -rf %{buildroot}
+%makeinstall_std
 
+%post -n %{libname} -p /sbin/ldconfig
 
-%post -n %{lib_name} -p /sbin/ldconfig
-
-%postun -n %{lib_name} -p /sbin/ldconfig
+%postun -n %{libname} -p /sbin/ldconfig
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 
-%files -n %{lib_name}
+%files -n %{libname}
 %defattr(-,root,root)
-%doc AUTHORS COPYING ChangeLog examples/*.c examples/Makefile* doc/*.html
-%{_libdir}/libdbh-*.so.*
+%{_libdir}/libdbh-%{apiver}.so.%{major}*
 
-%files -n %{lib_name}-devel
+%files -n %{develname}
 %defattr(-,root,root)
+%doc AUTHORS ChangeLog examples/*.c examples/Makefile* doc/*.html
 %{_includedir}/*
 %{_libdir}/pkgconfig/dbh.pc
 %{_libdir}/libdbh.*a
 %{_libdir}/libdbh.so
-
-
