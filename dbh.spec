@@ -11,6 +11,7 @@ License:	LGPLv2+
 Group:		System/Libraries
 URL:		http://dbh.sourceforge.net/
 Source:		http://downloads.sourceforge.net/dbh/%{name}-%{version}.tar.bz2
+Buildroot:	%{_tmppath}/%{name}-%{version}-buildroot
 
 %description 
 Disk based hashes is a method to create multidimensional binary trees on disk.
