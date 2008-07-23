@@ -6,7 +6,7 @@
 Summary:	Disk based hash library
 Name:		dbh
 Version:	4.5.0
-Release:	%mkrel 3
+Release:	%mkrel 5
 License:	LGPLv2+
 Group:		System/Libraries
 URL:		http://dbh.sourceforge.net/
