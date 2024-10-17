@@ -9,7 +9,7 @@ Version:	4.5.0
 Release:	%mkrel 5
 License:	LGPLv2+
 Group:		System/Libraries
-URL:		http://dbh.sourceforge.net/
+URL:		https://dbh.sourceforge.net/
 Source:		http://downloads.sourceforge.net/dbh/%{name}-%{version}.tar.bz2
 Buildroot:	%{_tmppath}/%{name}-%{version}-buildroot
 
